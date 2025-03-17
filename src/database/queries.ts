@@ -1,31 +1,11 @@
-import type { Insertable } from "kysely"
-import type getConnection from "./connection"
-import type { DB } from "kysely-codegen"
+import type { Database } from "sqlite3";
 
-type Connection = ReturnType<typeof getConnection>
-
-async function logAllQuestions(connection: Connection) {
-  try {
-    const result = await connection.selectFrom("Question").selectAll().execute()
-    console.log(result)
-  } catch (error) {
-    console.error(error)
-  }
+function logFirstFourtyAnswers(db: Database) {
+	db.each("select * from answer limit 40", (error, row) => {
+		if (!error) {
+			console.log(row);
+		}
+	});
 }
 
-async function createSurvey(
-  connection: Connection,
-  newSurvey: Insertable<DB["Survey"]>
-) {
-  try {
-    await connection
-      .insertInto("Survey")
-      .values(newSurvey)
-      .returningAll()
-      .executeTakeFirstOrThrow()
-  } catch (error) {
-    console.error(error)
-  }
-}
-
-export { logAllQuestions, createSurvey }
+export { logFirstFourtyAnswers };

@@ -7,7 +7,7 @@ export async function main() {
     await logAllQuestions(connection)
     await createSurvey(connection, { Description: "Insertable Test" })
   } catch (error) {
-    console.error("Failed to start:", error);
+    console.error(error);
     process.exit(1);
   }
 }
