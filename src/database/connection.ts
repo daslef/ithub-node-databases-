@@ -1,22 +1,21 @@
-import path from 'node:path'
-import SQLite from 'better-sqlite3'
+import { join } from 'node:path'
+import sqlite3 from 'better-sqlite3'
 import { Kysely, SqliteDialect } from 'kysely'
-import type { DB } from 'kysely-codegen'
+import type { DatabaseSchema } from './types'
 
-export default function getDbConnection() {
+export default function getConnection() {
   const dbFile = process.env.DB_FILE
-
   if (!dbFile) {
-    throw new Error('Couldn\'t find DB_FILE enviroment variable')
+    throw new Error('Not found DB_FILE env variable')
   }
-
-  const dbPath = path.join(import.meta.dirname, '..', '..', dbFile)
-
-  const dialect = new SqliteDialect({
-    database: new SQLite(dbPath),
-  })
-
-  return new Kysely<DB>({
-    dialect,
-  })
+  const dbPath = join(import.meta.dirname, '..', '..', dbFile)
+  try {
+    const dialect = new SqliteDialect({
+      database: new sqlite3(dbPath)
+    })
+    return new Kysely<DatabaseSchema>({ dialect })
+  } catch (error) {
+    console.error(error)
+    throw new Error('Couldn\'t establish connection with a database')
+  }
 }

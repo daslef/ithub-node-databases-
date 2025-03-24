@@ -1,16 +1,14 @@
 import getDbConnection from "./database/connection";
-import { findQuestionById } from "./database/queries";
+import { logAllQuestions } from "./database/queries";
 
-export function main() {
+export async function main() {
   try {
-    const db = getDbConnection()
-    findQuestionById(db, 3).then(result => {
-      console.log(result)
-    })
+    const connection = getDbConnection()
+    await logAllQuestions(connection)
   } catch (error) {
     console.error("Failed to start:", error);
     process.exit(1);
   }
 }
 
-main();
+await main();
