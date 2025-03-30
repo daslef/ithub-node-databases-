@@ -4,28 +4,13 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = env("DB_FILE")
+  url      = "file:./mental_health.sqlite"
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model Answer {
+  id Int @id @default(autoincrement())
   AnswerText String?
   SurveyID   Int?
   UserID     Int?
   QuestionID Int?
-
-  @@ignore
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model Question {
-  questiontext String?
-  questionid   Int?
-
-  @@ignore
-}
-
-model Survey {
-  SurveyID    Int     @id @default(autoincrement())
-  Description String?
 }
