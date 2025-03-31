@@ -20,4 +20,23 @@ function getTopFiveCountries(db: Database, cb: DriverCallback) {
 	);
 }
 
-export { getTopFiveCountries };
+function getPercentWithMentalDiseases(db: Database, cb: DriverCallback) {
+	db.all(
+		`select
+      (select
+        count(*) as Quantity
+        from Answer
+        where AnswerText = "Yes" and QuestionID = 33 and SurveyID = 2019
+      ) * 100 / count(*) as Percent
+      from Answer
+      where QuestionID = 33 and SurveyID = 2019;`,
+		(error, rows) => {
+			if (error) {
+				throw error;
+			}
+			cb(rows);
+		},
+	);
+}
+
+export { getTopFiveCountries, getPercentWithMentalDiseases };
