@@ -1,14 +1,23 @@
 import type { Database } from "sqlite3";
+import type { DriverCallback } from "./types";
 
-function logTopFiveCountries(db: Database) {
-	db.each(
-		"select country, count(*) as count from Answer limit 5 order by count desc",
-		(error, row) => {
-			if (!error) {
-				console.log(row);
+function getTopFiveCountries(db: Database, cb: DriverCallback) {
+	db.all(
+		`select
+    AnswerText as LiveCountry,
+    count(*) as Quantity
+    from Answer
+    where SurveyId = 2019 and QuestionID = 3
+    group by LiveCountry
+    order by Quantity desc
+    limit 5`,
+		(error, rows) => {
+			if (error) {
+				throw error;
 			}
+			cb(rows);
 		},
 	);
 }
 
-export { logTopFiveCountries };
+export { getTopFiveCountries };

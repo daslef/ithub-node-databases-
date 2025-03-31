@@ -1,10 +1,12 @@
 import getDbConnection from "./database/connection";
-import { logTopFiveCountries } from "./database/queries";
+import { getTopFiveCountries } from "./database/queries";
 
 export async function main() {
 	try {
 		const db = getDbConnection();
-		logTopFiveCountries(db);
+		getTopFiveCountries(db, (rows) => {
+			console.log(rows);
+		});
 	} catch (error) {
 		console.error(error);
 		process.exit(1);
