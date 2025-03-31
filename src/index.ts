@@ -1,11 +1,12 @@
 import getConnection from "./database/connection";
-import { logAllQuestions, createSurvey } from "./database/queries";
+import { getPhysicalAndMental, getMostFrequentWords } from "./database/queries";
 
 export async function main() {
 	try {
 		const connection = getConnection();
-		await logAllQuestions(connection);
-		await createSurvey(connection, { Description: "Insertable Test" });
+		// const results = await getPhysicalAndMental(connection);
+		const results = await getMostFrequentWords(connection);
+		console.log(results);
 	} catch (error) {
 		console.error("Failed to start:", error);
 		process.exit(1);
