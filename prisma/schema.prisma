@@ -3,29 +3,24 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DB_FILE")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model Answer {
-  AnswerText String?
-  SurveyID   Int?
-  UserID     Int?
-  QuestionID Int?
-
-  @@ignore
+model File {
+  id          Int      @id @default(autoincrement())
+  filename    String
+  size        Decimal
+  author      Author   @relation(fields: [author_id], onDelete: Cascade, references: [id])
+  author_id   Int
+  created_at  DateTime @default(now())
+  modified_at DateTime @updatedAt
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model Question {
-  questiontext String?
-  questionid   Int?
-
-  @@ignore
-}
-
-model Survey {
-  SurveyID    Int     @id @default(autoincrement())
-  Description String?
+model Author {
+  id          Int      @id @default(autoincrement())
+  name        String
+  files       File[]
+  created_at  DateTime @default(now())
+  modified_at DateTime @updatedAt
 }

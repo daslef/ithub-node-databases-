@@ -8,8 +8,6 @@
   "scripts": {
     "dev": "tsx watch --env-file=.env.local src/index.ts",
     "dev:test": "vitest --silent",
-    "db:pull": "prisma db pull",
-    "db:generate": "prisma generate",
     "check": "biome check .",
     "fix": "biome check --fix .",
     "format": "biome format --write .",
@@ -24,21 +22,22 @@
     "@types/better-sqlite3": "^7.6.12",
     "@types/node": "^22.10.5",
     "@vitest/coverage-v8": "^3.0.7",
-    "kysely-codegen": "^0.18.3",
+    "prisma": "^6.5.0",
     "rimraf": "^6.0.1",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.0.7"
   },
-  "engines": {
-    "node": ">=22.0.0"
-  },
   "dependencies": {
     "@prisma/client": "^6.5.0",
     "better-sqlite3": "^11.9.0",
-    "kysely": "^0.27.6",
-    "prisma": "^6.5.0",
-    "sqlite3": "^5.1.7"
+    "kysely": "^0.27.6"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "prisma": {
+    "seed": "tsx ./prisma/seed.ts"
   }
 }
